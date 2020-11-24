@@ -1,0 +1,50 @@
+ /*
+ Fadi Rached
+ 11/10/20
+ Sieve of Eratosthenes
+ Determines a numbers divisors within 2-7 and states if prime.
+ */
+
+ public class SieveofEratosthenes {
+
+     //formats everthing and then calls the "prime" method
+     public static void main(String[] args) { 
+         System.out.println("Number Divisors");
+         //loops through 2 - 63 and checks divisors
+         for(int count = 2; count <= 63; count++)
+         {
+             System.out.print(count + "     ");
+             if(count < 10)
+             {
+                 System.out.print(" ");
+             }
+             System.out.println(prime(count));
+         }
+        System.out.println(); 
+     }
+     
+     //calculates a numbers divisors  
+     public static String prime(int count) {         
+         boolean isPrime = true;
+         String output = "";
+         //checks if count is divisable by a number 2-7
+         for(int div = 2; div <= 7; div ++)
+         {
+             
+             //if divisable then return the divisor
+             if(count%div == 0 && count != div)
+             {
+                 output = output + String.valueOf(div)+ " "; 
+                 isPrime = false;
+             }                
+         }    
+         //else if prime is true then return "PRIME"
+         if(isPrime == true)
+         {
+             output = "PRIME";
+             isPrime = false;
+         }
+         return(output);        
+     }
+ }
+ 
