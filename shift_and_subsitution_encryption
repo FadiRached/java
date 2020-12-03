@@ -1,0 +1,133 @@
+/*
+ Fadi Rached
+ 12/2/20
+ Encryption and Decryption
+ Encrypts and then decrypts a string using a shift cipher or a 
+ substitution cipher. This assumes that a lowercase string with no special characters or spaces will be inputed 
+ */
+ import java.util.Scanner;
+ public class HW6Task4EncryptionDecryption {
+
+     public static void main(String[] args) {
+        //input setup
+        Scanner scan = new Scanner(System.in);
+        String plaintext = scan.next();
+        
+        //Shift Cipher Test Cases
+        int shiftAmt = 25; //adjust this to your liking (max 25)
+        System.out.println("Shift Cipher:");
+        System.out.println("Shift Amount = " + shiftAmt);
+        
+        System.out.println("Input:     " + plaintext + "\nEncrypted: " + ShiftEncrypt(plaintext, shiftAmt));
+        System.out.println("Decrypted: " + ShiftDecrypt(ShiftEncrypt(plaintext, shiftAmt), shiftAmt));
+        System.out.println(" ");
+        
+        System.out.println("Input:     " + "csforthewin" + "\nEncrypted: " + ShiftEncrypt("csforthewin", shiftAmt));
+        System.out.println("Decrypted: " + ShiftDecrypt(ShiftEncrypt("csforthewin", shiftAmt), shiftAmt));
+        System.out.println(" ");
+        
+        System.out.println("Input:     " + "cxinthechat" + "\nEncrypted: " + ShiftEncrypt("cxinthechat", shiftAmt));
+        System.out.println("Decrypted: " + ShiftDecrypt(ShiftEncrypt("cxinthechat", shiftAmt), shiftAmt));
+        System.out.println(" ");
+         
+        System.out.println("Input:     " + "abcdefghijklmnopqrstuvwxyz" + "\nEncrypted: " + ShiftEncrypt("abcdefghijklmnopqrstuvwxyz", shiftAmt));
+        System.out.println("Decrypted: " + ShiftDecrypt(ShiftEncrypt("abcdefghijklmnopqrstuvwxyz", shiftAmt), shiftAmt));
+        System.out.println(" ");
+        
+        
+        //Substitution Cipher Test Cases
+        char[] subAlpha = {'u','f','g','p','e','r','q','a','n','c','x','m','b','d','s','w','l','z','h','j','i','k','o','t','v','y'};
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("Substitution Cipher:");
+        System.out.println("Input:     " + plaintext + "\nEncrypted: " + SubEncrypt(plaintext, subAlpha));
+        System.out.println("Decrypted: " + SubDecrypt(SubEncrypt(plaintext, subAlpha), subAlpha));
+        System.out.println(" ");
+        
+        System.out.println("Input:     " + "hackingisfun" + "\nEncrypted: " + SubEncrypt("hackingisfun", subAlpha));
+        System.out.println("Decrypted: " + SubDecrypt(SubEncrypt("hackingisfun", subAlpha), subAlpha));
+        System.out.println(" ");
+         
+        System.out.println("Input:     " + "supercalifragilisticexpialidocious" + "\nEncrypted: " + SubEncrypt("supercalifragilisticexpialidocious", subAlpha));
+        System.out.println("Decrypted: " + SubDecrypt(SubEncrypt("supercalifragilisticexpialidocious", subAlpha), subAlpha));
+        System.out.println(" ");
+         
+        System.out.println("Input:     " + "abcdefghijklmnopqrstuvwxyz" + "\nEncrypted: " + SubEncrypt("abcdefghijklmnopqrstuvwxyz", subAlpha));
+        System.out.println("Decrypted: " + SubDecrypt(SubEncrypt("abcdefghijklmnopqrstuvwxyz", subAlpha), subAlpha));
+        System.out.println(" ");
+     }
+ 
+     public static String ShiftEncrypt(String word, int shiftAmt){
+         int temp = 0; //used for  determining ascii value of shifted letter
+         String shiftedWord = ""; //
+         
+         //loop through the plaintext word
+         for(int index = 0; index < word.length(); index++)
+         { 
+             temp = word.charAt(index) + shiftAmt; //shift the letter over using ascii
+             
+             //uses ascii values. if > 122, then find the remainder and add 96 to that. 
+             //Allows me to return back to a from z 
+             if(temp > 122)
+             {
+                 temp = (temp % 122) + 96;
+             }
+             shiftedWord +=(char)temp; //cyphertext word is built 
+         }
+     return shiftedWord;
+     }
+     
+     public static String ShiftDecrypt(String shiftedWord, int shiftAmt){
+         int temp = 0;
+         String unshiftedWord = "";
+         
+         for(int index = 0; index < shiftedWord.length(); index++)
+         {
+             temp = shiftedWord.charAt(index) - shiftAmt;
+             if(temp < 97) //if we get a value less than a (97) then reset back to Z
+             {
+                 temp = temp + 26; //no modulo requred to reset here, simply add 26
+             }
+             unshiftedWord +=(char)temp; //plaintext word is built
+         }
+     return unshiftedWord;
+     }
+     
+     public static String SubEncrypt(String plaintext, char[] subAlpha){
+         char[] alpha = {'a', 'b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+         char[] cipherTextArr = new char[plaintext.length()]; //used for storing the ciphertext word
+         String cipherText = ""; //we must output a string so the array above is converted to this string at the end
+         
+         for(int index = 0; index < plaintext.length(); index++)//loop through the plaintext word
+         {
+             for(int count = 0; count < alpha.length; count++)//loop through the normal alphabet looking for a match
+             {
+                 if(plaintext.charAt(index) == alpha[count])//if the positions match,
+                 {
+                     cipherTextArr[index] = subAlpha[count]; //then store the char in the ciphertext array using the substitution alphabet (key)
+                 }
+             }          
+         }
+         cipherText = String.valueOf(cipherTextArr); //convert array to string
+         return(cipherText);
+     }  
+ 
+     public static String SubDecrypt(String cipherText, char[] subAlpha){
+         char[] alpha = {'a', 'b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+         char[] plainTextArr = new char[cipherText.length()]; // used for storing the plaintext word
+         String plaintext = ""; //final output
+         
+         for(int index = 0; index < cipherText.length(); index++) //loop through ciphertext word
+         {
+             for(int count = 0; count < subAlpha.length; count++) //loop thorugh substitution alphabet looking for a match
+             {
+                 if(cipherText.charAt(index) == subAlpha[count]) //if a char matches, 
+                 {
+                     plainTextArr[index] = alpha[count]; //then store the char in the plaintext array using the normal alphabet
+                 }
+             }
+         }
+         plaintext = String.valueOf(plainTextArr); //convert arrary to string
+         return(plaintext);
+     }
+ }
