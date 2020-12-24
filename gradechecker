@@ -1,0 +1,62 @@
+/*
+Fadi Rached 
+12/23/20
+Determines passing grades from an array
+*/
+
+public class gradeChecker {
+
+    //prints all numbers in an array
+    public static void print(int[] numbers) {
+        for (int num: numbers) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        //prints passing grades
+        int[] grades = {60, 88, 78, 88, 59, 50, 90, 80, 58};
+        System.out.println("All Grades");
+        print(grades);
+
+        //prints number of passing grades
+        int numPassing = countNumsInRange(grades, 60, 100);
+        System.out.println(numPassing + " passing grades");
+        int numBs = countNumsInRange(grades, 80, 89);
+        System.out.println(numBs + " Bs");
+
+        //prints the passing grades
+        int[] passingGrades = getNumsInRange(grades, 60, 100);
+        System.out.println("Passing grades");
+        print(passingGrades);
+
+        //Lists "B Grades"
+        System.out.println("B grades");
+        int[] bgrades = getNumsInRange(grades, 80, 89);
+        print(bgrades);
+    }
+    // returns amount of numbers in a range
+    public static int countNumsInRange(int[] grades, int min, int max) {
+        int numsInRange = 0;
+        for (int count = 0; count < grades.length; count++) {
+            if (grades[count] >= min && grades[count] <= max) {
+                numsInRange++;
+            }
+        }
+        return numsInRange;
+    }
+
+    // returns the grades that are in the range
+    public static int[] getNumsInRange(int[] grades, int min, int max) {
+        int pos = 0;
+        int[] passingGrades = new int[countNumsInRange(grades, min, max)];
+        for (int count = 0; count < grades.length; count++) {
+            if (grades[count] >= min && grades[count] <= max) {
+                passingGrades[pos] = grades[count];
+                pos++;
+            }
+        }
+        return passingGrades;
+    }
+}
